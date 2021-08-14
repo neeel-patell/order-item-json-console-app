@@ -56,6 +56,14 @@ class Item:
         self.data.append({'id':id, 'name':name, 'type':item_type, 'price':price, 'available_quantity':available_quantity})
         # Writing whole file with new json data
         json.dump({'items' : self.data}, open('items.json', 'w'))
+        self.show_items()
+
+    def space_generator(self, var, length):
+        var = str(var)
+        space = ""
+        for i in range(len(var), length):
+            space = space + " "
+        return (var + space)
 
     def get_single_item(self, id):
         # function will return information about single item
@@ -67,3 +75,29 @@ class Item:
                 price = item['price']
                 break
         return {'name':name, 'price':price}
+
+    def show_items(self):
+        # show list of items in a specific format
+        for i in range(0,59):
+            print("-",end="")
+        print("")
+        print("| ID  | Name                     | Price     | Available |")
+        for i in range(0,59):
+            print("-",end="")
+        print("")
+        for item in self.data:
+            id = str(item['id'])
+            name = item['name']
+            price = str(item['price'])
+            quantity = str(item['available_quantity'])
+
+            id = "|" + self.space_generator(id, 5)
+            name = "| " + self.space_generator(name, 25)
+            price = "| " + self.space_generator(price, 10)
+            quantity = "| " + self.space_generator(quantity, 10) + "|"
+
+            print(id + name + price + quantity)
+            
+        for i in range(0,59):
+            print("-",end="")
+        print("")
