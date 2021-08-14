@@ -49,7 +49,24 @@ class Order:
         if choice.lower() in ['y','yes']:
             self.make()
         else:
+            self.update_items()
+            self.update_orders()
             print("Order Placed...") 
+
+    def update_items(self):
+        items = Item().get_all_item()
+        for item in self.order_items:
+            for data in items:
+                if data['id'] == item['item']:
+                    data['available_quantity'] = data['available_quantity'] - item['quantity']
+                    break
+
+        json.dump({'items' : items}, open('items.json', 'w'))
+
+    def update_orders(self):
+        id = self.get_latest_id()
+        self.data.append({'id':id, 'items':self.order_items})
+        json.dump({'orders':self.data}, open('orders.json','w'))
 
     def show_summery(self):
         for i in range(52):
